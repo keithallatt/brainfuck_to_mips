@@ -135,6 +135,8 @@ loop_0_end:	#]
 	jal memory_inc	#+
 	jal output_char	#.
 
+	jal print_memory
+
 	li $v0, 10
 	syscall
 
@@ -183,4 +185,43 @@ input_char:	# ,
 	mul $t2,$t0,4
 	sw $v0,mem_cells($t2)
 	jr $ra
+
+print_memory:
+	li      $v0, 0
+	la      $t1, mem_cells
+
+pm_loop:
+	lw      $t2, 0($t1)
+	addi    $t1, $t1, 4
+
+	andi $t7, $t8, 15
+	bnez $t7, no_new
+
+	li $a0, 10
+	li $v0, 11
+	syscall
+
+no_new:
+	li      $v0, 1
+	move    $a0, $t2
+	syscall
+
+	addi $t8, $t8, 1
+	lw $t9, mem_size
+	bge     $t8, $t9, pm_exit
+
+	li $a0, 44
+	li $v0, 11
+	syscall
+	li $a0, 9
+	syscall
+
+	j pm_loop
+
+ pm_exit:
+	li $v0, 11
+	li $a0, 10
+	syscall
+ 	jr $ra
+
 
