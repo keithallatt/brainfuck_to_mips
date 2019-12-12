@@ -1,8 +1,54 @@
+# Compiled "./mult_2_nums/mult_2_nums.txt"
+# containing:
+#
+#	>,
+#	
+#	print newline
+#	>[-] +++++ +++++ . [-]<
+#	
+#	>,
+#	
+#	<<         | Get input
+#	+++ +++        | 
+#	[              | 
+#	  > ---- ----  | 
+#	  > ---- ----  | 
+#	  << -         | 
+#	]              | Subtract 48 from both #2 and #3
+#	               | to get the raw value instead of ASCII
+#	               | 
+#	>              | Move index back to #2
+#	               | 
+#	[              | 
+#	  >            | 
+#	  [            | 
+#	    >+>+<<-    | Duplicate #3 to #4 and #5
+#	  ]            | 
+#	  >>           | 
+#	  [            | 
+#	    <<+>>-     | Move #3 to #3
+#	  ]            | 
+#	  <<<-         | Remove one from #2 and start again
+#	]              | 
+#	>[-]           | Remove all from #3
+#	               | 
+#	> [<<<+>>>-]   | Move #4 to #1
+#	<<<            | Move pointer to #1
+#	
+#	print newline
+#	>[-] +++++ +++++ . [-]<
+#	
+#	
+#	Print value at 0
+#	
+#	[>>+>+<<<-]>>>[<<<+>>>-]<<+>[<->[>++++++++++<[->-[>+>>]>[+[-<+>]>+>>]<<<<<]>[-]
+#	  ++++++++[<++++++>-]>[<<+>>-]>[<<+>>-]<<]>]<[->>++++++++[<++++++>-]]<[.[-]<]<
+
 .data
 
-# 128 entries
-mem_cells:	.word 0:128
-mem_size:	.word 128
+# 64 entries
+mem_cells:	.word 0:64
+mem_size:	.word 64
 
 .text
 
@@ -14,6 +60,41 @@ start:
 	jal pointer_inc	#>
 	jal input_char	#,
 	jal pointer_inc	#>
+
+loop_0_start:	#[
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	beqz $t1, loop_0_end
+	jal memory_dec	#-
+
+loop_0_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_0_start
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal output_char	#.
+
+loop_1_start:	#[
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	beqz $t1, loop_1_end
+	jal memory_dec	#-
+
+loop_1_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_1_start
+	jal pointer_dec	#<
+	jal pointer_inc	#>
 	jal input_char	#,
 	jal pointer_dec	#<
 	jal pointer_dec	#<
@@ -24,52 +105,28 @@ start:
 	jal memory_inc	#+
 	jal memory_inc	#+
 
-loop_0_start:	#[]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	beqz $t1, loop_0_end
-	jal pointer_inc	#>
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal pointer_inc	#>
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal pointer_dec	#<
-	jal pointer_dec	#<
-	jal memory_dec	#-
-
-loop_0_end:	#]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	bnez $t1, loop_0_start
-	jal pointer_inc	#>
-
-loop_1_start:	#[]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	beqz $t1, loop_1_end
-	jal pointer_inc	#>
-
-loop_2_start:	#[]
+loop_2_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_2_end
 	jal pointer_inc	#>
-	jal memory_inc	#+
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
 	jal pointer_inc	#>
-	jal memory_inc	#+
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
+	jal memory_dec	#-
 	jal pointer_dec	#<
 	jal pointer_dec	#<
 	jal memory_dec	#-
@@ -79,38 +136,23 @@ loop_2_end:	#]
 	lw $t1,mem_cells($t2)
 	bnez $t1, loop_2_start
 	jal pointer_inc	#>
-	jal pointer_inc	#>
 
-loop_3_start:	#[]
+loop_3_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_3_end
-	jal pointer_dec	#<
-	jal pointer_dec	#<
-	jal memory_inc	#+
-	jal pointer_inc	#>
-	jal pointer_inc	#>
-	jal memory_dec	#-
-
-loop_3_end:	#]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	bnez $t1, loop_3_start
-	jal pointer_dec	#<
-	jal pointer_dec	#<
-	jal pointer_dec	#<
-	jal memory_dec	#-
-
-loop_1_end:	#]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	bnez $t1, loop_1_start
 	jal pointer_inc	#>
 
-loop_4_start:	#[]
+loop_4_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_4_end
+	jal pointer_inc	#>
+	jal memory_inc	#+
+	jal pointer_inc	#>
+	jal memory_inc	#+
+	jal pointer_dec	#<
+	jal pointer_dec	#<
 	jal memory_dec	#-
 
 loop_4_end:	#]
@@ -118,16 +160,15 @@ loop_4_end:	#]
 	lw $t1,mem_cells($t2)
 	bnez $t1, loop_4_start
 	jal pointer_inc	#>
+	jal pointer_inc	#>
 
-loop_5_start:	#[]
+loop_5_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_5_end
 	jal pointer_dec	#<
 	jal pointer_dec	#<
-	jal pointer_dec	#<
 	jal memory_inc	#+
-	jal pointer_inc	#>
 	jal pointer_inc	#>
 	jal pointer_inc	#>
 	jal memory_dec	#-
@@ -139,19 +180,18 @@ loop_5_end:	#]
 	jal pointer_dec	#<
 	jal pointer_dec	#<
 	jal pointer_dec	#<
+	jal memory_dec	#-
 
-loop_6_start:	#[]
+loop_3_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_3_start
+	jal pointer_inc	#>
+
+loop_6_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_6_end
-	jal pointer_inc	#>
-	jal pointer_inc	#>
-	jal memory_inc	#+
-	jal pointer_inc	#>
-	jal memory_inc	#+
-	jal pointer_dec	#<
-	jal pointer_dec	#<
-	jal pointer_dec	#<
 	jal memory_dec	#-
 
 loop_6_end:	#]
@@ -159,10 +199,8 @@ loop_6_end:	#]
 	lw $t1,mem_cells($t2)
 	bnez $t1, loop_6_start
 	jal pointer_inc	#>
-	jal pointer_inc	#>
-	jal pointer_inc	#>
 
-loop_7_start:	#[]
+loop_7_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_7_end
@@ -181,129 +219,128 @@ loop_7_end:	#]
 	bnez $t1, loop_7_start
 	jal pointer_dec	#<
 	jal pointer_dec	#<
-	jal memory_inc	#+
+	jal pointer_dec	#<
 	jal pointer_inc	#>
 
-loop_8_start:	#[]
+loop_8_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_8_end
-	jal pointer_dec	#<
 	jal memory_dec	#-
-	jal pointer_inc	#>
 
-loop_9_start:	#[]
+loop_8_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_8_start
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal output_char	#.
+
+loop_9_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_9_end
-	jal pointer_inc	#>
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
+	jal memory_dec	#-
+
+loop_9_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_9_start
 	jal pointer_dec	#<
 
-loop_10_start:	#[]
+loop_10_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_10_end
+	jal pointer_inc	#>
+	jal pointer_inc	#>
+	jal memory_inc	#+
+	jal pointer_inc	#>
+	jal memory_inc	#+
+	jal pointer_dec	#<
+	jal pointer_dec	#<
+	jal pointer_dec	#<
 	jal memory_dec	#-
-	jal pointer_inc	#>
-	jal memory_dec	#-
-
-loop_11_start:	#[]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	beqz $t1, loop_11_end
-	jal pointer_inc	#>
-	jal memory_inc	#+
-	jal pointer_inc	#>
-	jal pointer_inc	#>
-
-loop_11_end:	#]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	bnez $t1, loop_11_start
-	jal pointer_inc	#>
-
-loop_12_start:	#[]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	beqz $t1, loop_12_end
-	jal memory_inc	#+
-
-loop_13_start:	#[]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	beqz $t1, loop_13_end
-	jal memory_dec	#-
-	jal pointer_dec	#<
-	jal memory_inc	#+
-	jal pointer_inc	#>
-
-loop_13_end:	#]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	bnez $t1, loop_13_start
-	jal pointer_inc	#>
-	jal memory_inc	#+
-	jal pointer_inc	#>
-	jal pointer_inc	#>
-
-loop_12_end:	#]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	bnez $t1, loop_12_start
-	jal pointer_dec	#<
-	jal pointer_dec	#<
-	jal pointer_dec	#<
-	jal pointer_dec	#<
-	jal pointer_dec	#<
 
 loop_10_end:	#]
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	bnez $t1, loop_10_start
 	jal pointer_inc	#>
+	jal pointer_inc	#>
+	jal pointer_inc	#>
 
-loop_14_start:	#[]
+loop_11_start:	#[
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	beqz $t1, loop_11_end
+	jal pointer_dec	#<
+	jal pointer_dec	#<
+	jal pointer_dec	#<
+	jal memory_inc	#+
+	jal pointer_inc	#>
+	jal pointer_inc	#>
+	jal pointer_inc	#>
+	jal memory_dec	#-
+
+loop_11_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_11_start
+	jal pointer_dec	#<
+	jal pointer_dec	#<
+	jal memory_inc	#+
+	jal pointer_inc	#>
+
+loop_12_start:	#[
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	beqz $t1, loop_12_end
+	jal pointer_dec	#<
+	jal memory_dec	#-
+	jal pointer_inc	#>
+
+loop_13_start:	#[
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	beqz $t1, loop_13_end
+	jal pointer_inc	#>
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal pointer_dec	#<
+
+loop_14_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_14_end
 	jal memory_dec	#-
+	jal pointer_inc	#>
+	jal memory_dec	#-
 
-loop_14_end:	#]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	bnez $t1, loop_14_start
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-
-loop_15_start:	#[]
+loop_15_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_15_end
-	jal pointer_dec	#<
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
+	jal pointer_inc	#>
 	jal memory_inc	#+
 	jal pointer_inc	#>
-	jal memory_dec	#-
+	jal pointer_inc	#>
 
 loop_15_end:	#]
 	mul $t2,$t0,4
@@ -311,60 +348,56 @@ loop_15_end:	#]
 	bnez $t1, loop_15_start
 	jal pointer_inc	#>
 
-loop_16_start:	#[]
+loop_16_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_16_end
-	jal pointer_dec	#<
-	jal pointer_dec	#<
 	jal memory_inc	#+
-	jal pointer_inc	#>
-	jal pointer_inc	#>
-	jal memory_dec	#-
 
-loop_16_end:	#]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	bnez $t1, loop_16_start
-	jal pointer_inc	#>
-
-loop_17_start:	#[]
+loop_17_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_17_end
-	jal pointer_dec	#<
+	jal memory_dec	#-
 	jal pointer_dec	#<
 	jal memory_inc	#+
 	jal pointer_inc	#>
-	jal pointer_inc	#>
-	jal memory_dec	#-
 
 loop_17_end:	#]
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	bnez $t1, loop_17_start
-	jal pointer_dec	#<
-	jal pointer_dec	#<
-
-loop_9_end:	#]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	bnez $t1, loop_9_start
+	jal pointer_inc	#>
+	jal memory_inc	#+
+	jal pointer_inc	#>
 	jal pointer_inc	#>
 
-loop_8_end:	#]
+loop_16_end:	#]
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
-	bnez $t1, loop_8_start
+	bnez $t1, loop_16_start
+	jal pointer_dec	#<
+	jal pointer_dec	#<
+	jal pointer_dec	#<
+	jal pointer_dec	#<
 	jal pointer_dec	#<
 
-loop_18_start:	#[]
+loop_14_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_14_start
+	jal pointer_inc	#>
+
+loop_18_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_18_end
 	jal memory_dec	#-
-	jal pointer_inc	#>
-	jal pointer_inc	#>
+
+loop_18_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_18_start
 	jal memory_inc	#+
 	jal memory_inc	#+
 	jal memory_inc	#+
@@ -374,7 +407,7 @@ loop_18_start:	#[]
 	jal memory_inc	#+
 	jal memory_inc	#+
 
-loop_19_start:	#[]
+loop_19_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_19_end
@@ -392,23 +425,34 @@ loop_19_end:	#]
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	bnez $t1, loop_19_start
+	jal pointer_inc	#>
 
-loop_18_end:	#]
-	mul $t2,$t0,4
-	lw $t1,mem_cells($t2)
-	bnez $t1, loop_18_start
-	jal pointer_dec	#<
-
-loop_20_start:	#[]
+loop_20_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_20_end
-	jal output_char	#.
+	jal pointer_dec	#<
+	jal pointer_dec	#<
+	jal memory_inc	#+
+	jal pointer_inc	#>
+	jal pointer_inc	#>
+	jal memory_dec	#-
 
-loop_21_start:	#[]
+loop_20_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_20_start
+	jal pointer_inc	#>
+
+loop_21_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_21_end
+	jal pointer_dec	#<
+	jal pointer_dec	#<
+	jal memory_inc	#+
+	jal pointer_inc	#>
+	jal pointer_inc	#>
 	jal memory_dec	#-
 
 loop_21_end:	#]
@@ -416,11 +460,83 @@ loop_21_end:	#]
 	lw $t1,mem_cells($t2)
 	bnez $t1, loop_21_start
 	jal pointer_dec	#<
+	jal pointer_dec	#<
 
-loop_20_end:	#]
+loop_13_end:	#]
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
-	bnez $t1, loop_20_start
+	bnez $t1, loop_13_start
+	jal pointer_inc	#>
+
+loop_12_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_12_start
+	jal pointer_dec	#<
+
+loop_22_start:	#[
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	beqz $t1, loop_22_end
+	jal memory_dec	#-
+	jal pointer_inc	#>
+	jal pointer_inc	#>
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+
+loop_23_start:	#[
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	beqz $t1, loop_23_end
+	jal pointer_dec	#<
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal memory_inc	#+
+	jal pointer_inc	#>
+	jal memory_dec	#-
+
+loop_23_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_23_start
+
+loop_22_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_22_start
+	jal pointer_dec	#<
+
+loop_24_start:	#[
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	beqz $t1, loop_24_end
+	jal output_char	#.
+
+loop_25_start:	#[
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	beqz $t1, loop_25_end
+	jal memory_dec	#-
+
+loop_25_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_25_start
+	jal pointer_dec	#<
+
+loop_24_end:	#]
+	mul $t2,$t0,4
+	lw $t1,mem_cells($t2)
+	bnez $t1, loop_24_start
 	jal pointer_dec	#<
 
 	li $v0, 10

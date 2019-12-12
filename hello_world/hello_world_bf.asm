@@ -1,8 +1,12 @@
+# Compiled "./hello_world/hello_world_bf.txt"
+# containing:
+#	++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
+
 .data
 
-# 128 entries
-mem_cells:	.word 0:128
-mem_size:	.word 128
+# 256 entries
+mem_cells:	.word 0:256
+mem_size:	.word 256
 
 .text
 
@@ -20,7 +24,7 @@ start:
 	jal memory_inc	#+
 	jal memory_inc	#+
 
-loop_0_start:	#[]
+loop_0_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_0_end
@@ -30,7 +34,7 @@ loop_0_start:	#[]
 	jal memory_inc	#+
 	jal memory_inc	#+
 
-loop_1_start:	#[]
+loop_1_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_1_end
@@ -67,7 +71,7 @@ loop_1_end:	#]
 	jal pointer_inc	#>
 	jal memory_inc	#+
 
-loop_2_start:	#[]
+loop_2_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_2_end

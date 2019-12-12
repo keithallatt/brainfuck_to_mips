@@ -12,27 +12,40 @@
 import sys
 import os
 
-if len(sys.argv) != 2:
-	print("Only supply one bf source file")
+if len(sys.argv) != 2 and len(sys.argv) != 3:
+	print("Only supply one bf source file, optional memory size as word (4 byte int)")
 	exit(1)
 
-source_data = sys.argv[1]
+source_filename = sys.argv[1]
 
-pre, ext = os.path.splitext(source_data)
+memory_size = 128
+if len(sys.argv) == 3:
+	memory_size = int(sys.argv[2])
+
+pre, ext = os.path.splitext(source_filename)
 
 x = pre + ".asm"
 
 # creates new file with new extension
 output_file = open(x, 'w')
 
-source_data = open(source_data, 'r').read()
+source_data = open(source_filename, 'r').read()
+
+# create top comment, with info about the source file, for readability
+initial_comment = f"# Compiled \"{source_filename}\"\n# containing:\n#\n"
+
+for line in source_data.split("\n"):
+	initial_comment += "#\t"+line+"\n"
+initial_comment += "\n"
+
+output_file.write(initial_comment)
 
 # create header
-header = """.data
+header = f""".data
 
-# 128 entries
-mem_cells:	.word 0:128
-mem_size:	.word 128
+# {memory_size} entries
+mem_cells:	.word 0:{memory_size}
+mem_size:	.word {memory_size}
 
 .text
 
@@ -71,7 +84,7 @@ for character in source_data:
 			# put end label at beginning of array
 			loop_labels = [label_index] + loop_labels
 
-			output_file.write("\n"+label_index+"start:\t#[]\n")
+			output_file.write("\n"+label_index+"start:\t#[\n")
 			output_file.write("\tmul $t2,$t0,4\n")
 			output_file.write("\tlw $t1,mem_cells($t2)\n")
 			output_file.write("\tbeqz $t1, "+label_index+"end\n")
