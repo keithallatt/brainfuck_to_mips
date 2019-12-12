@@ -1,0 +1,31 @@
+>,>,<<         | Get input
++++ +++        | 
+[              | 
+  > ---- ----  | 
+  > ---- ----  | 
+  << -         | 
+]              | Subtract 48 from both #2 and #3
+               | to get the raw value instead of ASCII
+               | 
+>              | Move index back to #2
+               | 
+[              | 
+  >            | 
+  [            | 
+    >+>+<<-    | Duplicate #3 to #4 and #5
+  ]            | 
+  >>           | 
+  [            | 
+    <<+>>-     | Move #3 to #3
+  ]            | 
+  <<<-         | Remove one from #2 and start again
+]              | 
+>[-]           | Remove all from #3
+               | 
+> [<<<+>>>-]   | Move #4 to #1
+<<<            | Move pointer to #1
+
+
+
+[>>+>+<<<-]>>>[<<<+>>>-]<<+>[<->[>++++++++++<[->-[>+>>]>[+[-<+>]>+>>]<<<<<]>[-]
+  ++++++++[<++++++>-]>[<<+>>-]>[<<+>>-]<<]>]<[->>++++++++[<++++++>-]]<[.[-]<]<
