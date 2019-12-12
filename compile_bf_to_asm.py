@@ -62,20 +62,49 @@ output_file.write(header)
 loop_labels = []
 new_label_index = 0
 
-for character in source_data:
+# holds the last a0 value, if output char, set to -1 to force reload
+repeat_a0_set = 0
+
+while len(source_data) > 0:
+	character = source_data[0]
+	source_data = source_data[1:]
+
+	repeated = 1
+	if character in "+-<>": # repeatable characters
+		while source_data[0] == character:
+			repeated += 1
+			source_data = source_data[1:]
+
+
 	if character in "+-,.[]<>":
 		# only do work if the character is valid
 		if character == "+":
 			# mem increment
+			if repeat_a0_set != repeated:
+				output_file.write(f"\tli $a0,{repeated}\t# repeat {repeated} times\n")
+				repeat_a0_set = repeated
+
 			output_file.write("\tjal memory_inc\t#+\n")
 		elif character == "-":
 			# mem decrement
+			if repeat_a0_set != repeated:
+				output_file.write(f"\tli $a0,{repeated}\t# repeat {repeated} times\n")
+				repeat_a0_set = repeated
+
 			output_file.write("\tjal memory_dec\t#-\n")
 		elif character == ">":
 			# pointer increment
+			if repeat_a0_set != repeated:
+				output_file.write(f"\tli $a0,{repeated}\t# repeat {repeated} times\n")
+				repeat_a0_set = repeated
+
 			output_file.write("\tjal pointer_inc\t#>\n")
 		elif character == "<":
 			# pointer decrement
+			if repeat_a0_set != repeated:
+				output_file.write(f"\tli $a0,{repeated}\t# repeat {repeated} times\n")
+				repeat_a0_set = repeated
+
 			output_file.write("\tjal pointer_dec\t#<\n")
 		elif character == "[":
 			label_index = f"loop_{new_label_index}_"
@@ -87,7 +116,7 @@ for character in source_data:
 			output_file.write("\n"+label_index+"start:\t#[\n")
 			output_file.write("\tmul $t2,$t0,4\n")
 			output_file.write("\tlw $t1,mem_cells($t2)\n")
-			output_file.write("\tbeqz $t1, "+label_index+"end\n")
+			output_file.write("\tbeqz $t1, "+label_index+"end\n\n")
 
 		elif character == "]":
 			# pop last index loop off
@@ -97,12 +126,16 @@ for character in source_data:
 			output_file.write("\n"+label_index+"end:\t#]\n")
 			output_file.write("\tmul $t2,$t0,4\n")
 			output_file.write("\tlw $t1,mem_cells($t2)\n")
-			output_file.write("\tbnez $t1, "+label_index+"start\n")
+			output_file.write("\tbnez $t1, "+label_index+"start\n\n")
 
 		elif character == ",":
+			repeat_a0_set = -1 # force reload of a0, not sure if input changes a0
 			output_file.write("\tjal input_char\t#,\n")
 		elif character == ".":
+			repeat_a0_set = -1 # force reload of a0
 			output_file.write("\tjal output_char\t#.\n")
+
+		last_char = character
 
 
 
@@ -113,14 +146,15 @@ footer = """
 	syscall
 
 pointer_inc:	# >
-	addi $t0,$t0,1
+	# num_reps in a0
+	add $t0,$t0,$a0
 	lw $t1,mem_size
 	div $t0,$t1
 	mfhi $t0
 	jr $ra # return
 
 pointer_dec:	# <
-	addi $t0,$t0,-1
+	sub $t0,$t0,$a0
 	lw $t1,mem_size
 	add $t0,$t0,$t1
 	div $t0,$t1
@@ -130,7 +164,7 @@ pointer_dec:	# <
 memory_inc:	# +
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
-	addi $t1,$t1,1
+	add $t1,$t1,$a0
 	andi $t1,$t1,255
 	sw $t1,mem_cells($t2)
 	jr $ra
@@ -138,7 +172,7 @@ memory_inc:	# +
 memory_dec:	# -
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
-	addi $t1,$t1,-1
+	sub $t1,$t1,$a0
 	andi $t1,$t1,255
 	sw $t1,mem_cells($t2)
 	jr $ra

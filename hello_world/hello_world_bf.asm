@@ -1,12 +1,13 @@
-# Compiled "./hello_world/hello_world_bf.txt"
+# Compiled "hello_world/hello_world_bf.txt"
 # containing:
+#
 #	++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
 
 .data
 
-# 256 entries
-mem_cells:	.word 0:256
-mem_size:	.word 256
+# 128 entries
+mem_cells:	.word 0:128
+mem_size:	.word 128
 
 .text
 
@@ -15,72 +16,72 @@ start:
 	li $t0, 0
 	#main program location.
 
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
+	li $a0,8	# repeat 8 times
 	jal memory_inc	#+
 
 loop_0_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_0_end
+
+	li $a0,1	# repeat 1 times
 	jal pointer_inc	#>
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
+	li $a0,4	# repeat 4 times
 	jal memory_inc	#+
 
 loop_1_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_1_end
+
+	li $a0,1	# repeat 1 times
+	jal pointer_inc	#>
+	li $a0,2	# repeat 2 times
+	jal memory_inc	#+
+	li $a0,1	# repeat 1 times
+	jal pointer_inc	#>
+	li $a0,3	# repeat 3 times
+	jal memory_inc	#+
+	li $a0,1	# repeat 1 times
+	jal pointer_inc	#>
+	li $a0,3	# repeat 3 times
+	jal memory_inc	#+
+	li $a0,1	# repeat 1 times
 	jal pointer_inc	#>
 	jal memory_inc	#+
-	jal memory_inc	#+
-	jal pointer_inc	#>
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal pointer_inc	#>
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal pointer_inc	#>
-	jal memory_inc	#+
+	li $a0,4	# repeat 4 times
 	jal pointer_dec	#<
-	jal pointer_dec	#<
-	jal pointer_dec	#<
-	jal pointer_dec	#<
+	li $a0,1	# repeat 1 times
 	jal memory_dec	#-
 
 loop_1_end:	#]
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	bnez $t1, loop_1_start
+
 	jal pointer_inc	#>
 	jal memory_inc	#+
 	jal pointer_inc	#>
 	jal memory_inc	#+
 	jal pointer_inc	#>
 	jal memory_dec	#-
+	li $a0,2	# repeat 2 times
 	jal pointer_inc	#>
-	jal pointer_inc	#>
+	li $a0,1	# repeat 1 times
 	jal memory_inc	#+
 
 loop_2_start:	#[
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	beqz $t1, loop_2_end
+
 	jal pointer_dec	#<
 
 loop_2_end:	#]
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	bnez $t1, loop_2_start
+
 	jal pointer_dec	#<
 	jal memory_dec	#-
 
@@ -88,61 +89,49 @@ loop_0_end:	#]
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
 	bnez $t1, loop_0_start
-	jal pointer_inc	#>
+
+	li $a0,2	# repeat 2 times
 	jal pointer_inc	#>
 	jal output_char	#.
+	li $a0,1	# repeat 1 times
 	jal pointer_inc	#>
+	li $a0,3	# repeat 3 times
 	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
 	jal output_char	#.
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
-	jal memory_inc	#+
+	li $a0,7	# repeat 7 times
 	jal memory_inc	#+
 	jal output_char	#.
 	jal output_char	#.
-	jal memory_inc	#+
-	jal memory_inc	#+
+	li $a0,3	# repeat 3 times
 	jal memory_inc	#+
 	jal output_char	#.
-	jal pointer_inc	#>
+	li $a0,2	# repeat 2 times
 	jal pointer_inc	#>
 	jal output_char	#.
+	li $a0,1	# repeat 1 times
 	jal pointer_dec	#<
 	jal memory_dec	#-
 	jal output_char	#.
+	li $a0,1	# repeat 1 times
 	jal pointer_dec	#<
 	jal output_char	#.
-	jal memory_inc	#+
-	jal memory_inc	#+
+	li $a0,3	# repeat 3 times
 	jal memory_inc	#+
 	jal output_char	#.
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
+	li $a0,6	# repeat 6 times
 	jal memory_dec	#-
 	jal output_char	#.
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
-	jal memory_dec	#-
+	li $a0,8	# repeat 8 times
 	jal memory_dec	#-
 	jal output_char	#.
+	li $a0,2	# repeat 2 times
 	jal pointer_inc	#>
-	jal pointer_inc	#>
+	li $a0,1	# repeat 1 times
 	jal memory_inc	#+
 	jal output_char	#.
+	li $a0,1	# repeat 1 times
 	jal pointer_inc	#>
-	jal memory_inc	#+
+	li $a0,2	# repeat 2 times
 	jal memory_inc	#+
 	jal output_char	#.
 
@@ -150,14 +139,15 @@ loop_0_end:	#]
 	syscall
 
 pointer_inc:	# >
-	addi $t0,$t0,1
+	# num_reps in a0
+	add $t0,$t0,$a0
 	lw $t1,mem_size
 	div $t0,$t1
 	mfhi $t0
 	jr $ra # return
 
 pointer_dec:	# <
-	addi $t0,$t0,-1
+	sub $t0,$t0,$a0
 	lw $t1,mem_size
 	add $t0,$t0,$t1
 	div $t0,$t1
@@ -167,7 +157,7 @@ pointer_dec:	# <
 memory_inc:	# +
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
-	addi $t1,$t1,1
+	add $t1,$t1,$a0
 	andi $t1,$t1,255
 	sw $t1,mem_cells($t2)
 	jr $ra
@@ -175,7 +165,7 @@ memory_inc:	# +
 memory_dec:	# -
 	mul $t2,$t0,4
 	lw $t1,mem_cells($t2)
-	addi $t1,$t1,-1
+	sub $t1,$t1,$a0
 	andi $t1,$t1,255
 	sw $t1,mem_cells($t2)
 	jr $ra
