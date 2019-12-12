@@ -1,3 +1,14 @@
+"""
+	compile_bf_to_asm.py
+
+	Compile BrainFuck source code to structure preserving assembly.
+
+	Usage:
+		python ./compile_bf_to_asm.py path/to/source/file.txt
+
+	Outputs a file with the same name but with .asm extension containing structure preserving assembly code compiled from source BrainFuck code.
+"""
+
 import sys
 import os
 
